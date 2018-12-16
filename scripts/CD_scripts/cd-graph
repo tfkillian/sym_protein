@@ -1,0 +1,37 @@
+#!/bin/sh
+
+FILE=$1
+
+XMIN=180
+XMAX=260
+
+XMIN=$2
+XMAX=$3
+
+############
+### FILE ###
+############
+sed -e 's/,/./g' $FILE > /tmp/tmp_$FILE
+
+###############
+#### GNUPLOT###
+###############
+gnuplot -e "
+  f(x) = 0 ;
+
+  set nokey;  
+  set terminal postscript font 'Arial, 26' ;
+  set xlabel 'Wavelength (nm)' ;
+  set ylabel 'CD (mdeg)' ;
+  set xrange [$XMIN:$XMAX] ;
+
+  set terminal postscript eps enhanced color ;
+  set output '$FILE.eps';
+   
+
+  plot '/tmp/tmp_$FILE' using 1:2 every ::22 with lines lc rgb 'black' lw 3,\
+        f(x) lc rgb 'grey' lw 1;
+
+  "
+
+rm -rf /tmp/tmp_$FILE

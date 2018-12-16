@@ -1,0 +1,54 @@
+title		 = 	MD with    position    restraints    (NPT    equilibration)  edited by Bram 04/10/2017 
+define		 =      -DPOSRES
+    
+;	Run    parameters    
+integrator	 =	md		;leap    frog    integrator    
+dt		 =	0.002		;equals    a    Umestep    of    2    fs        
+nsteps		 =	50000		;2  fs  *    50000 steps    =    100    ps
+    
+;	Output    control    
+nstxout		 =	5000		;save    trr-­‐coordinates    every    10    ps    
+nstvout		 =	5000		;save    velociUes    every    10   ps    
+nstfout		 =	5000		;save    forces    every    10    ps
+nstxtcout        =      500             ;save    compressed trajectory every 1 ps
+nstenergy	 =	500		;save    energies    every    1    ps    
+nstlog		 =	500		;update    log    file    every    1    ps
+
+;	Bond parameters
+continuation	 	=	yes             ;Continuation from NVT
+constraint_algorithm	=	lincs		;holonomic constraints
+lincs-order		=	4		;Highest order matrix expansion for lincs
+constraints		=	all-bonds	;all bonds (even heady atom-H bonds constrained)
+
+;	Neighborsearching
+ns_type		=	grid		;search neighboring grid cells
+nstlist		=	5		;10 fs
+rlist		=	1.2		;short-range neighborlist cutoff (in nm)
+rcoulomb	=	1.2		;short-range electrostatic cutoff (in nm)
+vdw-type	=	cut-off		;van der Waals cutoff scheme
+rvdw		=	1.2		;short-range van der Waals cutoff (in nm) 
+
+;	Electostatics
+coulombtype	=	PME		;Particle Mesh Ewald for long-range electrostatics
+pme_order	=	4		;cubic interpolation
+fourierspacing	=	0.12		;grid spacing for FFT
+
+;	Berendsen temperature coupling is on in two groups
+Tcoupl		=	V-rescale		;modified Berendsen thermostat
+tau_t		=	0.1 0.1			;time constant (in ps)
+tc_grps		=	Protein Non-protein	;two coupling groups
+ref_t		=	300 300			;reference temperature, one for each group, in K
+
+;	Pressure coupling is on 
+pcoupl		=   parrinello-rahman   ;barostat
+pcoupltype      =   isotropic           ;uniform scaling of box vectors
+tau_p           =   1.0                 ;time constant (1.0)
+compressibility    =   4.5e-5          ;isothermal compressiblility of water (in bar^-1)
+ref_p           =   1.0                 ;reference pressure (in bar)
+refcoord_scaling = com                  ;scaling on center of mass
+
+;	Periodic boundary conditions
+pbc		=	xyz		;3-D PBC
+
+;	Dispersion correction
+DispCorr	=	EnerPres		;account for cut-off vdW scheme

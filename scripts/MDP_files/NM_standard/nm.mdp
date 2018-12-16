@@ -1,0 +1,27 @@
+;	nm.mdp - used as input into grompp to generate nm.tpr for nma - edited by Bram 5/10/17
+;	Parameters describing what to do, when to stop and what to save 
+define           = -DFLEXIBLE 
+integrator =    nm              ;    Algorithm    (normal mode)       
+
+;	Parameters describing how to find the neighbors of each atom and how to calculate the interactions    
+nstlist    =    10            ;    Frequency    to    update    the    neighbor    list    and    long    range    forces    
+ns_type    =    Simple         ;    Method    to    determine    neighbor    list    (simple,    grid)    
+rlist      =    1.4          ;    Cut-off    for    making    neighbor    list    (short    range    forces)    
+coulombtype=    shift ;    Treatment    of    long    range    electrostaUc    interacUons    
+rcoulomb   =    1.0          ;    Short-­‐range    electrostaUc    cut-­‐off
+vdwtype    =    shift      ;    Treatment of vdw interactions
+rvdw       =    1.0
+rvdw-switch = 0
+rcoulomb-switch = 0
+
+nsteps = 10000000
+fourierspacing   = 0.19         
+fourier_nx       = 0            
+fourier_ny       = 0            
+fourier_nz       = 0            
+pme_order        = 4            
+ewald_rtol       = 1e-5   
+optimize_fft     = yes
+comm_mode = Linear
+dt = 0.002
+constraints	= none
